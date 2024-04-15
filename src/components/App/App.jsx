@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import FeedbackOptions from 'components/FeedbackOptions';
 import Section from 'components/Section';
@@ -7,60 +7,59 @@ import Statistics from 'components/Statistics';
 import { StyledMainTitle } from './App.styled';
 import Notification from 'components/Notification';
 
-export default class App extends Component {
-  static defaultProps = {
-    step: 1,
-    initialValue: 0,
+const settings = {
+  step: 1,
+  initialValue: 0,
+  options: ['good', 'neutral', 'bad'],
+};
+
+export default function App() {
+  const [good, setGood] = useState(settings.initialValue);
+  const [neutral, setNeutral] = useState(settings.initialValue);
+  const [bad, setBad] = useState(settings.initialValue);
+
+  const onLeaveFeedback = text => {
+    switch (text) {
+      case settings.options[0]:
+        setGood(good + settings.step);
+        break;
+      case settings.options[1]:
+        setNeutral(neutral + settings.step);
+        break;
+      case settings.options[2]:
+        setBad(bad + settings.step);
+        break;
+      default:
+        break;
+    }
   };
 
-  state = {
-    good: this.props.initialValue,
-    neutral: this.props.initialValue,
-    bad: this.props.initialValue,
-  };
+  const total = good + neutral + bad;
+  const positiveFeedbackPercentage = Math.round((good / total) * 100);
 
-  leaveFeedback = propName => {
-    this.setState(prevState => ({
-      [propName]: prevState[propName] + this.props.step,
-    }));
-  };
+  return (
+    <>
+      <StyledMainTitle>Cafe Expresso</StyledMainTitle>
+      <Section title="Please leave feedback">
+        <FeedbackOptions
+          options={settings.options}
+          onLeaveFeedback={onLeaveFeedback}
+        />
+      </Section>
 
-  countTotalFeedback = () => {
-    const { good, bad, neutral } = this.state;
-    return good + neutral + bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    const { good } = this.state;
-    if (!good) return 0;
-    const total = this.countTotalFeedback();
-    return Math.round((good / total) * 100);
-  };
-
-  render() {
-    const total = this.countTotalFeedback();
-    const positivePercentage = this.countPositiveFeedbackPercentage();
-    return (
-      <>
-        <StyledMainTitle>Cafe Expresso</StyledMainTitle>
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={this.state}
-            onLeaveFeedback={this.leaveFeedback}
+      <Section title="Statistics">
+        {total ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={positiveFeedbackPercentage}
           />
-        </Section>
-
-        <Section title="Statistics">
-          {total ? (
-            <Statistics
-              {...this.state}
-              positivePercentage={positivePercentage}
-            />
-          ) : (
-            <Notification message="There is no feedback" />
-          )}
-        </Section>
-      </>
-    );
-  }
+        ) : (
+          <Notification message="There is no feedback" />
+        )}
+      </Section>
+    </>
+  );
 }
