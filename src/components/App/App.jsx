@@ -9,30 +9,18 @@ import Notification from 'components/Notification';
 
 const settings = {
   step: 1,
-  initialValue: 0,
-  options: ['good', 'neutral', 'bad'],
+  initialState: { good: 0, neutral: 0, bad: 0 },
 };
 
 export default function App() {
-  const [good, setGood] = useState(settings.initialValue);
-  const [neutral, setNeutral] = useState(settings.initialValue);
-  const [bad, setBad] = useState(settings.initialValue);
+  const [state, setState] = useState(settings.initialState);
 
   const onLeaveFeedback = text => {
-    switch (text) {
-      case settings.options[0]:
-        setGood(good + settings.step);
-        break;
-      case settings.options[1]:
-        setNeutral(neutral + settings.step);
-        break;
-      case settings.options[2]:
-        setBad(bad + settings.step);
-        break;
-      default:
-        break;
-    }
+    setState(prev => {
+      return { ...prev, [text]: prev[text] + settings.step };
+    });
   };
+  const { good, neutral, bad } = state;
 
   const total = good + neutral + bad;
   const positiveFeedbackPercentage = Math.round((good / total) * 100);
@@ -41,18 +29,13 @@ export default function App() {
     <>
       <StyledMainTitle>Cafe Expresso</StyledMainTitle>
       <Section title="Please leave feedback">
-        <FeedbackOptions
-          options={settings.options}
-          onLeaveFeedback={onLeaveFeedback}
-        />
+        <FeedbackOptions options={state} onLeaveFeedback={onLeaveFeedback} />
       </Section>
 
       <Section title="Statistics">
         {total ? (
           <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
+            {...state}
             total={total}
             positivePercentage={positiveFeedbackPercentage}
           />

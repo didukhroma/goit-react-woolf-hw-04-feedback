@@ -1,9 +1,10 @@
 import Button from 'components/Button';
 
 function FeedbackOptions({ options, onLeaveFeedback }) {
+  const keys = Object.keys(options);
   return (
     <div>
-      {options.map(el => (
+      {keys.map(el => (
         <Button key={el} text={el} cbOnClick={onLeaveFeedback} />
       ))}
     </div>
