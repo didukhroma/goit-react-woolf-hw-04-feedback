@@ -1,23 +1,20 @@
 import { useState } from 'react';
-
+//Components
 import FeedbackOptions from 'components/FeedbackOptions';
 import Section from 'components/Section';
 import Statistics from 'components/Statistics';
-
-import { StyledMainTitle } from './App.styled';
 import Notification from 'components/Notification';
-
-const settings = {
-  step: 1,
-  initialState: { good: 0, neutral: 0, bad: 0 },
-};
+//Styles
+import { StyledMainTitle } from './App.styled';
+//Settings
+import { INITIAL_STATE, DEFAULT_STEP } from 'settings/settings';
 
 export default function App() {
-  const [state, setState] = useState(settings.initialState);
+  const [state, setState] = useState(INITIAL_STATE);
 
   const onLeaveFeedback = text => {
     setState(prev => {
-      return { ...prev, [text]: prev[text] + settings.step };
+      return { ...prev, [text]: prev[text] + DEFAULT_STEP };
     });
   };
   const { good, neutral, bad } = state;
