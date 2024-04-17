@@ -1,4 +1,6 @@
+//Helpers
 import { capitalize } from 'helpers/capitalize';
+//Styles
 import { StyledButton } from './Button.styled';
 
 function Button({ text, cbOnClick }) {

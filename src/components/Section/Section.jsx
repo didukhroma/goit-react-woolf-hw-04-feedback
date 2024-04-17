@@ -1,4 +1,6 @@
+//Components
 import Container from 'components/Container';
+//Styles
 import { StyledSection } from './Section.styled';
 
 function Section({ title, children }) {

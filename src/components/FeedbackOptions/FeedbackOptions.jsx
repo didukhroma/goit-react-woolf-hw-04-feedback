@@ -1,4 +1,4 @@
-//Componenets
+//Components
 import Button from 'components/Button';
 
 function FeedbackOptions({ options, onLeaveFeedback }) {
