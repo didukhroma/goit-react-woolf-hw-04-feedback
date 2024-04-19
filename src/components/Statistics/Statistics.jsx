@@ -1,7 +1,11 @@
 import StatisticsItem from 'components/StatisticsItem';
+import { useGlobalContext } from 'context/GlobalProvider/GlobalProvider';
 
-function Statistics(props) {
-  const keys = Object.keys(props);
+function Statistics() {
+  const { state, total, positiveFeedbackPercentage } = useGlobalContext();
+  const propertyObj = { ...state, total, positiveFeedbackPercentage };
+
+  const keys = Object.keys(propertyObj);
   const text = 'positive feedback';
   const symbol = <span>&#37;</span>;
   return (
@@ -10,7 +14,7 @@ function Statistics(props) {
         <StatisticsItem
           key={el}
           name={arr.length - 1 !== idx ? el : text}
-          value={props[el]}
+          value={propertyObj[el]}
           symbol={arr.length - 1 === idx && symbol}
         />
       ))}

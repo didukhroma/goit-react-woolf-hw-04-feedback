@@ -1,7 +1,9 @@
 import Button from 'components/Button';
+import { useGlobalContext } from 'context/GlobalProvider/GlobalProvider';
 
-function FeedbackOptions({ options, onLeaveFeedback }) {
-  const keys = Object.keys(options);
+function FeedbackOptions() {
+  const { state, onLeaveFeedback } = useGlobalContext();
+  const keys = Object.keys(state);
   return (
     <div>
       {keys.map(el => (
