@@ -1,4 +1,6 @@
+//Helpers
 import { capitalize } from 'helpers/capitalize';
+//Styles
 import { StyledLi, StyledItem } from './StatisticsItem.styled';
 
 function StatisticsItem({ name, value, symbol }) {
